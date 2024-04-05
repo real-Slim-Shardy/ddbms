@@ -1,8 +1,11 @@
 package main
 
 import (
+	"ddbms/lib/lb"
 	"ddbms/lib/manager"
+	"ddbms/lib/serv"
 	"fmt"
+	"log"
 )
 
 const (
@@ -21,6 +24,13 @@ func main() {
 		fmt.Println(err)
 	}
 	fmt.Println(data)
+
+	// send config info to instances
+	op := serv.OpArgs{N: 1, Status: "Ready"}
+	err = lb.SendCfgToServer((*data)["server1"].Address, "Ops.SetConfig", op)
+	if err != nil {
+		log.Println(err)
+	}
 
 	// test system availability
 
